@@ -14,5 +14,5 @@ These scripts look at how close teams have come to replicating Arsenal's (and Pr
 The Premier League plot is displayed below. Editors note: At the point of this submission, Liverpool had not yet lost in their initial 16 matches, hence the (somewhat hopeful ;)) green bar.
 
 
-![Premier League](invinciblesPremierLeague.PNG)
+![Premier League](invinciblesPremierLeague.png)
 
