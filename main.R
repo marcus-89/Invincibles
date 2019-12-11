@@ -116,4 +116,4 @@ for(i in 1:length(vals)){
 
 p
 
-ggsave("invinciblesPremierLeague.png", last_plot(), dpi = 1080)
+ggsave("invinciblesPremierLeague.png", last_plot(), dpi = 800)
