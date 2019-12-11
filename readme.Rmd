@@ -1,0 +1,17 @@
+---
+title: "The Invincibles"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Summary
+
+These scripts look at how close teams have come to replicating Arsenal's (and Preston North End's!) success in going through an entire season without losing, become "The Invincibles". Raw football data from the 1993-94 season is available for many leagues on http://www.football-data.co.uk/downloadm.php. Using this raw data, the longest (initial, i.e. from round one) non-loss streaks for each season are extracted and processed in `data_processing.R`. A bar plot is generated in `plotting.R`, including a dotted line segment of the at-the-time total number of matches in a season. However, all of this is conveniently accomplished through `main.R` which let's the user generate the bar plot for any given league by changing a function parameter (see the raw excel data for the full list of sheets (leagues) that can be called). In `main.R` some further work relating to the Premier League bar plot (which was the original purpose) is available as well.
+
+The Premier League plot is displayed below. Editors note: At the point of this submission, Liverpool had not yet lost in their initial 16 matches, hence the (somewhat hopeful ;)) green bar.
+
+
+![Premier League](invinciblesPremierLeague.PNG)
