@@ -66,7 +66,7 @@ longest_byseason %>%
   arrange(season) -> longest_byseason
 
 segments = data.frame(x = c(0.5,3.5), xend = c(3.5,28.5), y=c(42, 38), yend = c(42,38))
-# plotting without fill = team
+# plotting
 p = longest_byseason %>%
   ggplot() + 
   geom_col(aes(season, round, alpha = 0+current_season, fill = did_lose)) +
@@ -117,3 +117,50 @@ for(i in 1:length(vals)){
 p
 
 ggsave("invinciblesPremierLeague.png", last_plot(), dpi = 800)
+
+
+# same plot w dark mode & coord flipped
+segments_reversed = data.frame(x = c(25.5,0.5), xend = c(28.5,25.5), y=c(42, 38), yend = c(42,38))
+
+p_dark = longest_byseason %>%
+  ggplot(aes(season, round)) + 
+  geom_col(aes(fill = did_lose)) +
+  geom_text(aes(label = round), hjust = 2, size = 5) +
+  labs(x = "Season", y = "Number of (initial) matches unbeaten") +
+  scale_y_continuous(breaks = c(0,10,20,30,38,42), limits = c(0,42)) +
+  scale_fill_manual(values = c("darkgreen", "darkred")) +
+  scale_alpha(range = c(0.7,1)) +
+  geom_segment(data = segments_reversed, aes(x=x, xend=xend, y=y, yend=yend), linetype=2, col = "green") +
+  scale_x_discrete(limits = rev(levels(longest_byseason$season))) +
+  coord_flip() +
+  theme(plot.background = element_rect(fill = "black", color = "black"),
+        panel.background = element_rect(fill = "black", color = "black"),
+        panel.grid = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(color = "green"),
+        legend.position = "none")
+
+# adds logos to plot
+# changes image used for the dual winners
+paths[[14]] = "images/newcastle+nottingham_horizontal.png"
+imgs = vector("list", length(teams))
+k = 1
+for(i in paths){
+  imgs[[k]] = grab_img(i)
+  k = k+1
+}
+
+for(i in 1:length(vals)){
+  # i do not know how to set transparent background to my own altered images (as opposed to the sources)
+  # so a manual fix to add specifically nottingham and newcastle horizontally aligned 
+  if(grepl("/", longest_byseason$team)[i]){
+    p_dark = p_dark + annotation_custom(imgs[[team_index[i]-1]], ymin = vals[i]-0.5, ymax = vals[i]+1.5, xmin = 28.5-i, xmax = 29.5-i)
+    p_dark = p_dark + annotation_custom(imgs[[team_index[i]-2]], ymin = vals[i]+0.5, ymax = vals[i]+2.5, xmin = 28.5-i, xmax = 29.5-i)
+  } else{
+    p_dark = p_dark + annotation_custom(imgs[[team_index[i]]], ymin = vals[i]-0.5, ymax = vals[i]+1.5, xmin = 28.5-i, xmax = 29.5-i)
+  }
+}
+
+p_dark
+ggsave("invinciblesPremierLeagueDarkMode.png", last_plot(), dpi = 800)
